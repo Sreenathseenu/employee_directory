@@ -343,7 +343,7 @@ class _ChatListState extends State<ChatList> {
                                           ),
                                           SizedBox(height: 8),
                                           StreamBuilder(
-                                              stream: Firestore.instance
+                                              stream: FirebaseFirestore.instance
                                                   .collection(
                                                       'chats/hkbsyyOPuAwAmxTIMxex/${data.myEvents[index]['events_allowed']['id']}')
                                                   .orderBy('created',

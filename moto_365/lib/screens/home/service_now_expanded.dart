@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moto_365/components/background.dart';
 import 'package:moto_365/components/gard.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/services_provider.dart';
 import 'package:moto_365/screens/home/group_services.dart';
 import 'package:moto_365/screens/search/services_expanded.dart';
@@ -39,9 +40,9 @@ class _ServiceNowExpandedState extends State<ServiceNowExpanded> {
           body: data.isLoading
               ? Center(
                   child: SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-),
+                    color: Colors.deepOrange,
+                    size: 50.0,
+                  ),
                 )
               : GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -85,11 +86,12 @@ class _ServiceNowExpandedState extends State<ServiceNowExpanded> {
                                           topLeft: Radius.circular(8),
                                           topRight: Radius.circular(8)),
                                       child: Image(
-                                    image: NetworkImage("https://automoto.techbyheart.in${data.serviceGroup[index]['image']}"),
-                                    fit: BoxFit.cover,
-                                    width: 116,
-                                    height: 80,
-                                  ),
+                                        image: NetworkImage(
+                                            "${Url.main}${data.serviceGroup[index]['image']}"),
+                                        fit: BoxFit.cover,
+                                        width: 116,
+                                        height: 80,
+                                      ),
                                     )
 
                                     // Image(image:data.serviceGroup[index]['images'].isEmpty? AssetImage('assets/images/slice.png'):NetworkImage(data.serviceGroup[index]['images'][0]['image']),fit: BoxFit.cover,height: 125,width: 120),

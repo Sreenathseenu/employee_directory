@@ -77,9 +77,9 @@ class _HudState extends State<Hud> {
    // print('start');
    final data=Provider.of<MapProvider>(context);
     var geolocator = Geolocator();
-var locationOptions = LocationOptions(  accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 0, forceAndroidLocationManager: true, );
+var locationOptions = LocationSettings(  accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 0,  );
 //print('kooiiii');
-StreamSubscription<Position> positionStream = geolocator.getPositionStream(locationOptions).listen(
+StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: locationOptions).listen(
     (Position position) async{
       //print('kooi');
         //print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString()+ ', ' +position.speed.toString());
@@ -92,8 +92,8 @@ StreamSubscription<Position> positionStream = geolocator.getPositionStream(locat
         
         });
         if(mode){
-          distance = await Geolocator().distanceBetween(lati, longi, data.steps[index]["maneuver"]["location"][1], data.steps[index]["maneuver"]["location"][0]);
-        }else{distance = await Geolocator().distanceBetween(lati, longi, data.steps[index+1]["maneuver"]["location"][1], data.steps[index+1]["maneuver"]["location"][0]);}
+          distance = await Geolocator.distanceBetween(lati, longi, data.steps[index]["maneuver"]["location"][1], data.steps[index]["maneuver"]["location"][0]);
+        }else{distance = await Geolocator.distanceBetween(lati, longi, data.steps[index+1]["maneuver"]["location"][1], data.steps[index+1]["maneuver"]["location"][0]);}
         //print(distance);
         
     });

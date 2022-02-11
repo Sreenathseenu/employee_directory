@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moto_365/providers/auth_provider.dart';
+import 'package:moto_365/screens/auth/login_screen.dart';
 import 'package:moto_365/screens/forum/club_home.dart';
 import 'package:moto_365/screens/forum/club_main_screen.dart';
 import 'package:moto_365/screens/forum/forum_home.dart';
 import 'package:moto_365/screens/forum/forum_list.dart';
 import 'package:moto_365/screens/forum/thread_create.dart';
 import 'package:moto_365/screens/home/general.dart';
+import 'package:moto_365/screens/home/insuramnce.dart';
 
 import 'package:moto_365/screens/home/profile_settings.dart';
+import 'package:moto_365/screens/map/carComparison.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -18,11 +21,11 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  /* @override
-  void didChangeDependencies() {
-    Provider.of<Auth>(context).getCustomer();
-    super.didChangeDependencies();
-  }*/
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Auth>(context);
@@ -47,7 +50,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   child: ListTile(
                     onTap: () {
                       Provider.of<Auth>(context, listen: false).logOut();
-    
+
                       Navigator.of(context).pushReplacementNamed('/');
                     },
                     title: Center(
@@ -67,7 +70,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               :
               //data.customer==null||data.customer.isEmpty?Center(child:CircularProgressIndicator()):
               SingleChildScrollView(
-                child: Column(
+                  child: Column(
                     children: <Widget>[
                       CircleAvatar(
                         radius: 60,
@@ -87,7 +90,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       SizedBox(height: 20),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         color: Colors.deepOrange,
                         height: 1,
                       ),
@@ -113,24 +117,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.60,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).dialogTheme.backgroundColor,
+                              color:
+                                  Theme.of(context).dialogTheme.backgroundColor,
                               border: Border.all(
                                 width: 1,
-                                color:
-                                    Theme.of(context).dialogTheme.backgroundColor,
+                                color: Theme.of(context)
+                                    .dialogTheme
+                                    .backgroundColor,
                               ),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Center(
                               child: DropdownButton(
                                   hint: Text('vehicles'),
                                   value: data.activeVehicle['id'],
                                   onChanged: (value) {
-                                    int index = data.vehicles
-                                        .indexWhere((item) => item['id'] == value);
+                                    int index = data.vehicles.indexWhere(
+                                        (item) => item['id'] == value);
                                     data.setActiveVehicle(data.vehicles[index]);
                                   },
                                   underline: Container(
@@ -143,20 +149,51 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       SizedBox(height: 8),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         color: Colors.deepOrange,
                         height: 1,
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         decoration: BoxDecoration(
                             //color:Colors.grey[800],
                             borderRadius: BorderRadius.circular(8)),
                         child: ListTile(
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder:(context)=> General()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CarCompareList(
+                                      isCompare: false,
+                                      cars: {},
+                                    )));
+                          },
+                          title: Text(
+                            'Auto Compare',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                backgroundColor: Colors.transparent,
+                                color: Colors.white70),
+                          ),
+                          leading: Icon(
+                            Icons.drive_eta_outlined,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        decoration: BoxDecoration(
+                            //color:Colors.grey[800],
+                            borderRadius: BorderRadius.circular(8)),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => General()));
                           },
                           title: Text(
                             'Profile',
@@ -173,14 +210,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         decoration: BoxDecoration(
                             //color:Colors.grey[800],
                             borderRadius: BorderRadius.circular(8)),
                         child: ListTile(
                           onTap: () {
                             Navigator.of(context).pop();
-                           // Navigator.of(context).pushNamed(ForumList.routeName);
+                            // Navigator.of(context).pushNamed(ForumList.routeName);
                           },
                           title: Text(
                             'Reward',
@@ -195,14 +233,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         decoration: BoxDecoration(
                             //color:Colors.grey[800],
                             borderRadius: BorderRadius.circular(8)),
                         child: ListTile(
                           onTap: () {
                             Navigator.of(context).pop();
-                           // Navigator.of(context).pushNamed(ForumList.routeName);
+                            // Navigator.of(context).pushNamed(ForumList.routeName);
                           },
                           title: Text(
                             'Help & About',
@@ -219,8 +258,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ListTile(
                         onTap: () {
                           Provider.of<Auth>(context, listen: false).logOut();
-              
-                          Navigator.of(context).pushReplacementNamed('/');
+
+                          // Navigator.of(context).pushReplacementNamed('/');
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                              (Route<dynamic> route) => false);
                         },
                         title: Text(
                           'sign out',
@@ -233,11 +276,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20,),
-                      Text("v1.2 (BETA)",style: TextStyle(color:Colors.white12,))
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text("v1.2 (BETA)",
+                          style: TextStyle(
+                            color: Colors.white12,
+                          ))
                     ],
                   ),
-              )),
+                )),
     );
   }
 }

@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: MediaQuery.of(context).size.height,
                     child: AnimationLimiter(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: AnimationConfiguration.toStaggeredList(
                           duration: const Duration(milliseconds: 375),
                           childAnimationBuilder: (widget) => SlideAnimation(
@@ -106,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 180,),
                             /* Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: CountryPickerDropdown(
@@ -163,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                               child: Text('+91'),
                                               value: '+91',
                                             ),
-                                            DropdownMenuItem(
-                                              child: Text('+98'),
-                                              value: '+98',
-                                            )
+                                            // DropdownMenuItem(
+                                            //   child: Text('+98'),
+                                            //   value: '+98',
+                                            // )
                                           ],
                                           onChanged: (value) {
                                             setState(() {
@@ -231,27 +232,33 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 10,),
                             _isLoading
                                 ? SpinKitSpinningLines(
   color: Colors.deepOrange,
   size: 50.0,
 )
-                                : Button(
-                                    onPress: () {
-                                      final isValid =
-                                          _form.currentState.validate();
-                                      if (!isValid) {
-                                        return;
-                                      }
-                                      final String phone = phoneController.text;
-                                      print(phone);
-                                      // data.isUserExist(phone)
-                                      //     ?
-                                      goToSignIn(phone);
-                                      // : goToSignUp(phone);
-                                    },
-                                    text: 'SIGNIN',
-                                  ),
+                                : Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Button(
+                                    width: double.infinity,
+                                      onPress: () {
+                                        final isValid =
+                                            _form.currentState.validate();
+                                        if (!isValid) {
+                                          return;
+                                        }
+                                        final String phone = phoneController.text;
+                                        print(phone);
+                                        // data.isUserExist(phone)
+                                        //     ?
+                                        goToSignIn(phone);
+                                        // : goToSignUp(phone);
+                                      },
+                                      text: 'SIGNIN',
+                                    ),
+                                ),
                             Text("We'll send you a one time password",
                                 style: TextStyle(
                                     fontSize: 12,
@@ -260,6 +267,34 @@ class _LoginScreenState extends State<LoginScreen> {
                                         .textTheme
                                         .bodyText1
                                         .backgroundColor)),
+                                        SizedBox(height: 20,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                           Text("By clicking, I accept the ",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white70)),
+                                    Text("Terms & Conditions ",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.deepOrange)) ,
+                                    Text("& ",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white70)),
+                                    Text("Privacy Policy",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.deepOrange)) ,
+                                          ],
+                                        ),
+                                        SizedBox(height: 80,)
                             // FlatButton(
                             //     onPressed: () {
                             //       Navigator.of(context).pushReplacement(

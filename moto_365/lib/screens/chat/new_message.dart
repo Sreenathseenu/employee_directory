@@ -80,7 +80,7 @@ class _NewMessageState extends State<NewMessage> {
   var _enteredMessage = '';
   void _sendMessage(id, name) {
     FocusScope.of(context).unfocus();
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('chats/hkbsyyOPuAwAmxTIMxex/${widget.index}')
         
     .add({'text': _enteredMessage, 'created': Timestamp.now(), 'user': id,'username':name});

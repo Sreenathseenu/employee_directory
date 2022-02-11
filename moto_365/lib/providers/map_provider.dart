@@ -21,7 +21,7 @@ class MapProvider with ChangeNotifier {
     try {
       
       final response = await http.get(
-          'https://api.mapbox.com/directions/v5/mapbox/driving/$slong,$slat;$flong,$flat?steps=true&access_token=pk.eyJ1Ijoic3JlZW5hdGgyMDk5IiwiYSI6ImNrN3I0bG4xdzBhbG4zZW12OGpjbGlodzQifQ.DLnMLN92Ipxgx8STc8LdCg',
+        Uri.parse('https://api.mapbox.com/directions/v5/mapbox/driving/$slong,$slat;$flong,$flat?steps=true&access_token=pk.eyJ1Ijoic3JlZW5hdGgyMDk5IiwiYSI6ImNrN3I0bG4xdzBhbG4zZW12OGpjbGlodzQifQ.DLnMLN92Ipxgx8STc8LdCg'),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -40,7 +40,7 @@ class MapProvider with ChangeNotifier {
   Future<void> fetchType()async{
     this.isSos=true;
     notifyListeners();
-    final response=await http.get("${Url.domain}/sos/view-sos-type/",headers: {
+    final response=await http.get(Uri.parse("${Url.domain}/sos/view-sos-type/"),headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             //'Authorization': 'Bearer $_token'
@@ -57,7 +57,7 @@ class MapProvider with ChangeNotifier {
   Future<void> fetchStores()async{
     this.isStore=true;
     notifyListeners();
-    final response=await http.get("${Url.domain}/sos/all-store/",headers: {
+    final response=await http.get(Uri.parse("${Url.domain}/sos/all-store/"),headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             //'Authorization': 'Bearer $_token'
@@ -72,7 +72,7 @@ class MapProvider with ChangeNotifier {
 Future<void> addSos({brand,model,registration,issue,name,phone,address,email,store,type})async{
   this.isSos=true;
   notifyListeners();
-  final response=await http.post("${Url.domain}/sos/add-new/",headers: {
+  final response=await http.post(Uri.parse("${Url.domain}/sos/add-new/"),headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             //'Authorization': 'Bearer $_token'

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:moto_365/models/urls.dart';
@@ -25,7 +26,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> isRequested(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/request-status?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/request-status?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -43,7 +44,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> createComment({id, comment}) async {
     try {
       final response = await http.post(
-          "${Url.domain}/club/create-comment/?id=$id",
+        Uri.parse("${Url.domain}/club/create-comment/?id=$id"),
           body: json.encode({"comment": comment}),
           headers: {
             'Content-type': 'application/json',
@@ -60,7 +61,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> createSubComment({id, comment}) async {
     try {
       final response = await http.post(
-          "${Url.domain}/club/create-sub-comment/?id=$id",
+         Uri.parse("${Url.domain}/club/create-sub-comment/?id=$id"),
           body: json.encode({"sub_comment": comment}),
           headers: {
             'Content-type': 'application/json',
@@ -77,7 +78,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> fetchSubComment(id) async {
     try {
       final response = await http
-          .get("${Url.domain}/club/sub-comment-list?id=$id", headers: {
+          .get(Uri.parse("${Url.domain}/club/sub-comment-list?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -95,7 +96,7 @@ class ClubProvider with ChangeNotifier {
     try {
       print("startttt");
       final response =
-          await http.get("${Url.domain}/club/event/list?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/event/list?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -135,14 +136,14 @@ class ClubProvider with ChangeNotifier {
       var response = await request.send();
       print('image saved');
       print(response.statusCode);
-      /*var res = await http.Response.fromStream(response);
+      var res = await http.Response.fromStream(response);
       final id = json.decode(res.body)['data']['id'];
-      Firestore.instance.collection('chats/hkbsyyOPuAwAmxTIMxex/$id').add({
+      FirebaseFirestore.instance.collection('chats/hkbsyyOPuAwAmxTIMxex/$id').add({
         'text': 'welcome',
         'created': Timestamp.now(),
         'user': 0,
         'username': 'moto365'
-      });*/
+      });
     } catch (error) {
       print(error);
     }
@@ -152,7 +153,7 @@ class ClubProvider with ChangeNotifier {
     // try {
     print(location);
     final response = await http
-        .get("${Url.domain}/club/event/timeline?location=$location", headers: {
+        .get(Uri.parse("${Url.domain}/club/event/timeline?location=$location"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -174,7 +175,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> fetchLocation() async {
     try {
       final response =
-          await http.get("${Url.domain}/club/event/location-list", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/event/location-list"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -193,7 +194,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> checkModerator() async {
     try {
       final response =
-          await http.get("${Url.domain}/club/check-moderator", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/check-moderator"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -215,7 +216,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> acceptUser(username) async {
     try {
       final response = await http.get(
-          "${Url.domain}/club/accept-moderator",
+         Uri.parse("${Url.domain}/club/accept-moderator"),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -233,7 +234,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> sendRequest(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/send-request?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/send-request?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -251,7 +252,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> fetchEvent() async {
     try {
       final response =
-          await http.get("${Url.domain}/club/show-all-event-request", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/show-all-event-request"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -269,7 +270,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> acceptRequest(id, username) async {
     try {
       final response = await http.get(
-          "${Url.domain}/club/accept-request?id=$id&username=$username",
+        Uri.parse("${Url.domain}/club/accept-request?id=$id&username=$username"),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -287,7 +288,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> denyRequest(id, username) async {
     try {
       final response = await http.get(
-          "${Url.domain}/club/deny-request?id=$id&username=$username",
+        Uri.parse("${Url.domain}/club/deny-request?id=$id&username=$username"),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -304,7 +305,7 @@ class ClubProvider with ChangeNotifier {
 
   Future<void> fetchMyEvents() async {
     try {
-      final response = await http.get("${Url.domain}/club/my-events", headers: {
+      final response = await http.get(Uri.parse("${Url.domain}/club/my-events"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -323,7 +324,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> joinEvents(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/join-event?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/join-event?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -340,7 +341,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> deleteEvents(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/delete-event?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/delete-event?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -357,7 +358,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> deleteComment(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/delete-comment?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/delete-comment?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -374,7 +375,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> deleteSubComment(id) async {
     try {
       final response = await http
-          .get("${Url.domain}/club/delete-sub-comment?id=$id", headers: {
+          .get(Uri.parse("${Url.domain}/club/delete-sub-comment?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -391,7 +392,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> updateComment({id, comment}) async {
     try {
       final response =
-          await http.post("${Url.domain}/club/update-comment?id=$id", body: {
+          await http.post(Uri.parse("${Url.domain}/club/update-comment?id=$id"), body: {
         "comment": comment
       }, headers: {
         // 'Content-type': 'application/json',
@@ -410,7 +411,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> updateSubComment({id, comment}) async {
     try {
       final response = await http.post(
-          "${Url.domain}/club/update-sub-comment?id=$id",
+         Uri.parse("${Url.domain}/club/update-sub-comment?id=$id"),
           body: json.encode({"comment": comment}),
           headers: {
             'Content-type': 'application/json',
@@ -429,7 +430,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> getUserrequest() async {
     try {
       final response =
-          await http.get("${Url.domain}/club/show-all-event-request", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/show-all-event-request"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -446,7 +447,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> likeEvents({id, isLiked}) async {
     try {
       final response =
-          await http.post("${Url.domain}/club/like-event?id=$id", headers: {
+          await http.post(Uri.parse("${Url.domain}/club/like-event?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -460,7 +461,7 @@ class ClubProvider with ChangeNotifier {
   Future<void> unlikeEvents({id, isLiked}) async {
     try {
       final response =
-          await http.get("${Url.domain}/club/unlike-event?id=$id", headers: {
+          await http.get(Uri.parse("${Url.domain}/club/unlike-event?id=$id"), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'

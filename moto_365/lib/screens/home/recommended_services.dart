@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/services_provider.dart';
 import 'package:moto_365/screens/home/group_services.dart';
+import 'package:moto_365/screens/home/insuramnce.dart';
 import 'package:moto_365/screens/search/services_expanded.dart';
 import 'package:provider/provider.dart';
 
@@ -14,10 +16,11 @@ class RecommendedServices extends StatelessWidget {
     recomended.fetchServicesGroup();
     //print(recomended.items[0].runtimeType);
     return recomended.isLoading
-        ? Center(child: SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-))
+        ? Center(
+            child: SpinKitSpinningLines(
+            color: Colors.deepOrange,
+            size: 50.0,
+          ))
         : Container(
             margin: EdgeInsets.symmetric(vertical: 12),
             //width: double.infinity,
@@ -43,10 +46,16 @@ class RecommendedServices extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                          if(recomended.serviceGroup[index]['id']=="1"){
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder:(context)=> Insurance()));
+                          }else{
+                            Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => GroupServices(
                                     id: recomended.serviceGroup[index]['id'],
                                   )));
+                          }
+                          
                         },
                         child: Container(
                           width: 116,
@@ -70,9 +79,11 @@ class RecommendedServices extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(
                                       8), //BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8)),
                                   child: Image(
-                                    image: NetworkImage(
-                                        "https://automoto.techbyheart.in${recomended.serviceGroup[index]['image']}"),
-                                    fit: BoxFit.cover,
+                                    image:
+                                    recomended.serviceGroup[index]['id']=="1"?AssetImage("${recomended.serviceGroup[index]['image']}"):
+                                     NetworkImage(
+                                        "${Url.main}${recomended.serviceGroup[index]['image']}"),
+                                    fit: BoxFit.contain,
                                     width: 116,
                                     height: 80,
                                   ),

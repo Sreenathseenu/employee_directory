@@ -77,36 +77,30 @@ class _OtpScreenState extends State<OtpScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: PinCodeTextField(
-                      
-                     
+                      appContext: context,
   length: 6,
-  obsecureText: false,
+  obscureText: false,
   animationType: AnimationType.none,
   pinTheme: PinTheme(
-    
     shape: PinCodeFieldShape.box,
     borderRadius: BorderRadius.circular(5),
-    fieldHeight: 40,
-    fieldWidth: 35,
-    
+    fieldHeight: 50,
+    fieldWidth: 40,
+    activeFillColor: Colors.white,
     
   ),
-  
+  textStyle: TextStyle(color: Colors.white),
+  animationDuration: Duration(milliseconds: 300),
   backgroundColor: Colors.transparent,
- // enableActiveFill: false,
-  textInputType: TextInputType.number,
-  textStyle: TextStyle(
-    color: Theme.of(context).textTheme.headline1.color
-  ),
+  enableActiveFill: false,
+  // errorAnimationController: errorController,
   controller: otpController,
   onCompleted: (v) {
     print("Completed");
   },
   onChanged: (value) {
     print(value);
-    //setState(() {
-     // currentText = value;
-    //});
+    
   },
   beforeTextPaste: (text) {
     print("Allowing to paste $text");
@@ -114,47 +108,51 @@ class _OtpScreenState extends State<OtpScreen> {
     //but you can show anything you want here, like your pop up saying wrong paste format or etc
     return true;
   },
-),
+)
                   ),SizedBox(height: 50,),
                  _isLoading?SpinKitSpinningLines(
   color: Colors.deepOrange,
   size: 50.0,
-): Button(
-                    onPress: (){
-                     data.signIn(routeArgs, otpController.text).then((_) {
-                                     setState(() {
-                                    _isLoading = false;
-                                  });
-                                  
-                                    if(data.userExist){
-                                       Navigator.of(context).pop();
-                                       Navigator.of(context).pushReplacementNamed('/');
-                                     
-                                      
-                                    }else{
-                                      Navigator.of(context)
-          .pushNamed(ProfileDetails.routeName, arguments: routeArgs);
-                                    }
+): Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child:   Button(
+    width: double.infinity,
+                      onPress: (){
+                       data.signIn(routeArgs, otpController.text).then((_) {
+                                       setState(() {
+                                      _isLoading = false;
+                                    });
                                     
-                                  }).catchError((onError) {
-                                    setState(() {
-                                    _isLoading = false;
-                                  });
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                        title: Text('oops..'),
-                                        content: Text('we couldnt log you in at the moment'),
+                                      if(data.userExist){
+                                         Navigator.of(context).pop();
+                                         Navigator.of(context).pushReplacementNamed('/');
                                        
-                                      ));
-                            });
-                             setState(() {
-                                    _isLoading = true;
-                                  });
-                                 
-                    },
-                    text: 'VERIFY',
-                  ),
+                                        
+                                      }else{
+                                        Navigator.of(context)
+            .pushNamed(ProfileDetails.routeName, arguments: routeArgs);
+                                      }
+                                      
+                                    }).catchError((onError) {
+                                      setState(() {
+                                      _isLoading = false;
+                                    });
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                          title: Text('oops..'),
+                                          content: Text('we couldnt log you in at the moment'),
+                                         
+                                        ));
+                              });
+                               setState(() {
+                                      _isLoading = true;
+                                    });
+                                   
+                      },
+                      text: 'VERIFY',
+                    ),
+),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

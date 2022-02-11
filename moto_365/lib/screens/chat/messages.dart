@@ -38,8 +38,9 @@ class Messages extends StatelessWidget {
         });
   }
 }*/
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 import 'package:moto_365/screens/chat/bubble.dart';
 
 class Messages extends StatelessWidget {
@@ -50,7 +51,7 @@ class Messages extends StatelessWidget {
   Widget build(BuildContext context) {
     print("\n\nnind :: $ind\n\n");
     return StreamBuilder(
-        stream: Firestore.instance
+        stream: FirebaseFirestore.instance
             .collection('chats/hkbsyyOPuAwAmxTIMxex/$ind')
             .orderBy('created', descending: true)
             .snapshots(),

@@ -22,7 +22,7 @@ class Products with ChangeNotifier {
   Future<void> fetchProducts() async {
     try {
       final url = '${Url.domain}/products/all-products/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -41,7 +41,7 @@ class Products with ChangeNotifier {
     try {
       //final url = '${Url.domain}/product/?search=wahing';
       final response =
-          await http.get('${Url.domain}/product/?search=$query', headers: {
+          await http.get(Uri.parse('${Url.domain}/product/?search=$query'), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         //'Authorization': 'Bearer $_token'
@@ -62,7 +62,7 @@ class Products with ChangeNotifier {
       isLoading = true;
       notifyListeners();
       final response = await http
-          .get('${Url.domain}/stores/customer-products-view/$query', headers: {
+          .get(Uri.parse('${Url.domain}/stores/customer-products-view/$query'), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'

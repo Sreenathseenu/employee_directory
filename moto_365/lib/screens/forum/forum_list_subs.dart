@@ -44,8 +44,8 @@ class _ThreadsState extends State<Threads> {
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ThreadAdd(routeArgs, false, {})));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => ThreadAdd(routeArgs, false, {})));
                 },
                 child: Icon(Icons.add))
           ],

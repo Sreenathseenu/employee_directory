@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/auth_provider.dart';
 import 'package:moto_365/providers/club_provider.dart';
 import 'package:share/share.dart';
@@ -232,9 +233,9 @@ class _ForumExpandedState extends State<ForumExpanded> {
     void optionClick(String value) {
       switch (value) {
         case 'Edit':
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ThreadAdd(widget.routeArgs['id'], true,
-                  Provider.of<ForumProvider>(context, listen: false).single)));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => ThreadAdd(widget.routeArgs['id'], true,
+          //         Provider.of<ForumProvider>(context, listen: false).single)));
           break;
         case 'Delete':
           Provider.of<ForumProvider>(context, listen: false)
@@ -340,7 +341,7 @@ class _ForumExpandedState extends State<ForumExpanded> {
                                   radius: 20,
                                   //backgroundColor: Colors.deepPurple,
                                   backgroundImage: NetworkImage(
-                                      'https://automoto.techbyheart.in/${data.single['userimage']}'),
+                                      '${Url.main}${data.single['userimage']}'),
                                 ),
                               ),
                               SizedBox(width: 8),

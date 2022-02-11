@@ -34,49 +34,51 @@ class _SearchScreenState extends State<SearchScreen> {
     final services = Provider.of<Services>(context);
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-            title: Text(
-              'SEARCH',
-              style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 20,
-                  fontFamily: 'Montserrat'),
-            ),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    showSearch(
-                      context: context,
-                      delegate: DataSearch(),
-                    );
-                  }),
-              Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child: SizedBox(
-                    width: 70,
-                    child: Image(image: AssetImage('assets/images/slice.png'))),
-              )
+      child: Background(
+        child: Scaffold(
+          appBar: AppBar(
+              title: Text(
+                'SEARCH',
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 20,
+                    fontFamily: 'Montserrat'),
+              ),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate: DataSearch(),
+                      );
+                    }),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: SizedBox(
+                      width: 70,
+                      child: Image(image: AssetImage('assets/images/slice.png'))),
+                )
+              ],
+              bottom: TabBar(tabs: <Widget>[
+                Tab(
+                  text: 'Forum',
+                ),
+                Tab(
+                  text: 'Accessories',
+                ),
+                Tab(
+                  text: 'Services',
+                ),
+              ])),
+         // drawer: DrawerWidget(),
+          body: TabBarView(
+            children: <Widget>[
+              ForumSearch(false, ''),
+              SearchList('Accessories', false, ''),
+              SearchList('Services', false, '')
             ],
-            bottom: TabBar(tabs: <Widget>[
-              Tab(
-                text: 'Forum',
-              ),
-              Tab(
-                text: 'Accessories',
-              ),
-              Tab(
-                text: 'Services',
-              ),
-            ])),
-        drawer: DrawerWidget(),
-        body: TabBarView(
-          children: <Widget>[
-            ForumSearch(false, ''),
-            SearchList('Accessories', false, ''),
-            SearchList('Services', false, '')
-          ],
+          ),
         ),
       ),
     );

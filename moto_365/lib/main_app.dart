@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:moto_365/components/custom_route.dart';
@@ -28,6 +29,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//     AwesomeNotifications().actionStream.listen(
+//     (ReceivedNotification receivedNotification){
+
+//         Navigator.of(context).pushNamed(
+//             '/NotificationPage',
+//             arguments: {
+//                 // your page params. I recommend you to pass the
+//                 // entire *receivedNotification* object
+//                 receivedNotification
+//             }
+//         );
+
+//     }
+// );
     return Consumer<Auth>(builder: (ctx, auth, _) {
       return /*Platform.isIOS
           ? CupertinoApp(

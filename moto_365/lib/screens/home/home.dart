@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moto_365/components/background.dart';
+import 'package:moto_365/components/gard.dart';
 import 'package:moto_365/screens/cart/cart_screen.dart';
 import 'package:moto_365/screens/chat/chat_list_screen.dart';
 import 'package:moto_365/screens/forum/club_main_screen.dart';
 import 'package:moto_365/screens/forum/forum_screen.dart';
 import 'package:moto_365/screens/home/drawer.dart';
 import 'package:moto_365/screens/home/home_screen.dart';
+import 'package:moto_365/screens/home/service_now.dart';
+import 'package:moto_365/screens/home/service_now_expanded.dart';
 import 'package:moto_365/screens/home/set_location.dart';
+import 'package:moto_365/screens/map/auto_services.dart';
 import 'package:moto_365/screens/map/map_screen.dart';
 import 'package:moto_365/screens/search/search_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,15 +27,17 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> _children = [
     HomeScreen(),
-    SearchScreen(),
-    Map(),
-    CartScreen(),
+    
+   Map(),
+    AutomotoServices(),
     ClubMain(),
+    ServiceNowExpanded(),
+
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return Grad(
       child: Scaffold(
           /* appBar:  AppBar(
           
@@ -64,45 +70,47 @@ class _HomeState extends State<Home> {
                     OMIcons.home,
                     size: 24,
                   ),
-                  title: Text('',
+                  title: Text('Home',
                       style: TextStyle(
-                        fontSize: 0.0,
+                        fontSize: 12.0,
                       ))),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    OMIcons.search,
-                    size: 24,
-                  ),
-                  title: Text('',
-                      style: TextStyle(
-                        fontSize: 0.0,
-                      ))),
+              
               BottomNavigationBarItem(
                   icon: Icon(
                     OMIcons.map,
                     size: 24,
                   ),
-                  title: Text('',
+                  title: Text('Map',
                       style: TextStyle(
-                        fontSize: 0.0,
+                        fontSize: 12.0,
                       ))),
-              BottomNavigationBarItem(
+                       BottomNavigationBarItem(
                   icon: Icon(
-                    OMIcons.shoppingCart,
+                    OMIcons.settings,
                     size: 24,
                   ),
-                  title: Text('',
+                  title: Text('Auto Services',
                       style: TextStyle(
-                        fontSize: 0.0,
+                        fontSize: 12.0,
                       ))),
+             
               BottomNavigationBarItem(
                   icon: Icon(
                     OMIcons.message,
                     size: 24,
                   ),
-                  title: Text('',
+                  title: Text('Club',
                       style: TextStyle(
-                        fontSize: 0.0,
+                        fontSize: 12.0,
+                      ))),
+                      BottomNavigationBarItem(
+                  icon: Icon(
+                    OMIcons.accountCircle,
+                    size: 24,
+                  ),
+                  title: Text('Services',
+                      style: TextStyle(
+                        fontSize: 12.0,
                       ))),
             ],
           ),

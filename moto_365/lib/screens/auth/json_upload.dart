@@ -86,9 +86,9 @@ class _JsonUploadState extends State<JsonUpload> {
                                   onTap: ()async{
                                     //file = await ImagePicker.pickImage(source: ImageSource.gallery );
                                     Navigator.of(context).pop();
-                     file = await FilePicker.getFile(
+                     file = (await FilePicker.platform.pickFiles(
         allowedExtensions: ['json', 'JSON'],
-        type: FileType.custom);
+        type: FileType.custom)) as File;
 
                       print(file);
                       //print(json.decode(file));
@@ -123,9 +123,9 @@ class _JsonUploadState extends State<JsonUpload> {
                                 child: ListTile(
                                   onTap: ()async{
                                   Navigator.of(context).pop();  //file = await ImagePicker.pickImage(source: ImageSource.gallery );
-                     licenseFile = await FilePicker.getFile(
+                     licenseFile = (await FilePicker.platform.pickFiles(
         allowedExtensions: ['json', 'JSON'],
-        type: FileType.custom);
+        type: FileType.custom)) as File;
 
                       print(licenseFile);
                       //print(json.decode(file));

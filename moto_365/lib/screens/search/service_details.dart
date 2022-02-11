@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moto_365/components/button.dart';
 import 'package:moto_365/components/carousel.dart';
 import 'package:moto_365/components/gard.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/auth_provider.dart';
 import 'package:moto_365/providers/services_provider.dart';
 import 'package:moto_365/screens/auth/login_screen.dart';
@@ -32,7 +33,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     _pageController = PageController(initialPage: 0, viewportFraction: 0.8);
     vidUrl = widget.item["video"] != null ? widget.item["video"] : "";
     images = [
-      "https://automoto.techbyheart.in${widget.item["image"]}",
+      "${Url.main}${widget.item["image"]}",
     ];
     final data = Provider.of<Services>(context, listen: false);
 
@@ -83,7 +84,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image(
                                   image: NetworkImage(
-                                      "https://automoto.techbyheart.in${widget.item["image"]}"),
+                                      "${Url.main}${widget.item["image"]}"),
                                 ),
                               ),
                             ),

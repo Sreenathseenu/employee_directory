@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:650496512330:android:cbf2df06ce8a52649371b3",
+        "mobilesdk_app_id": "1:650496512330:android:355907ed5e755b9f9371b3",
         "android_client_info": {
-          "package_name": "com.automoto.moto_365"
+          "package_name": "com.automoto.moto365"
         }
       },
       "oauth_client": [
@@ -30,6 +30,49 @@
             {
               "client_id": "650496512330-185uad21bf4j944aeu2rgtonubq7sk3b.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "650496512330-bposijig9ri8j5pe7vms8rdrif1shs9u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.moto365"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650496512330:android:cbf2df06ce8a52649371b3",
+        "android_client_info": {
+          "package_name": "com.example.moto_365"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650496512330-185uad21bf4j944aeu2rgtonubq7sk3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhGu2-yg7IpzTtLAL1GoVYlAlQ5tVhrgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650496512330-185uad21bf4j944aeu2rgtonubq7sk3b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "650496512330-bposijig9ri8j5pe7vms8rdrif1shs9u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.moto365"
+              }
             }
           ]
         }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_tagging/flutter_tagging.dart';
+//import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:http/http.dart' as http;
 import 'package:moto_365/models/urls.dart';
 
@@ -29,7 +29,7 @@ class ForumProvider with ChangeNotifier {
     {"id": 'a', "name": 'Featured'},
     {"id": 'b', "name": 'Latest'}
   ];
-  List<Language> tagsList = [];
+  //List<Language> tagsList = [];
   List thread = [];
   List threadWithSub = [];
   List threadSearch = [];
@@ -71,7 +71,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> createSubForum({title, region, master}) async {
     try {
       const url = "${Url.domain}/forum//sub-forum/create/";
-      final response = await http.post(url,
+      final response = await http.post(Uri.parse(url),
           body: json.encode(
               {"title": title, "region": region, "masterforum": master}),
           headers: _token == null
@@ -94,7 +94,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> deleteThread(id) async {
     try {
-      final response = await http.post("${Url.domain}/forum/destroy/$id",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/destroy/$id"),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -118,7 +118,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> fetchRegion() async {
     try {
       const url = "${Url.domain}/forum/region/list";
-      final response = await http.get(url,
+      final response = await http.get(Uri.parse(url),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -142,7 +142,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> fetchMaster() async {
     try {
       const url = "${Url.domain}/forum/master-forum/list";
-      final response = await http.get(url,
+      final response = await http.get(Uri.parse(url),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -167,7 +167,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> fetchMasterWithSub() async {
     try {
       const url = "${Url.domain}/forum/list";
-      final response = await http.get(url,
+      final response = await http.get(Uri.parse(url),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -195,7 +195,7 @@ class ForumProvider with ChangeNotifier {
       isLoadingThread = true;
       notifyListeners();
       const url = "${Url.domain}/forum/trending";
-      final response = await http.get(url,
+      final response = await http.get(Uri.parse(url),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -226,7 +226,7 @@ class ForumProvider with ChangeNotifier {
         ? "${Url.domain}/forum/thread-list"
         : "${Url.domain}/forum/thread-list?q=$query";
     print(url);
-    final response = await http.get(url,
+    final response = await http.get(Uri.parse(url),
         headers: _token == null
             ? {
                 'Content-type': 'application/json',
@@ -251,7 +251,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> fetchThreadWithSub(id) async {
     try {
       final response =
-          await http.get("${Url.domain}/forum/subforum-thread-list/$id",
+          await http.get(Uri.parse("${Url.domain}/forum/subforum-thread-list/$id"),
               headers: _token == null
                   ? {
                       'Content-type': 'application/json',
@@ -278,7 +278,7 @@ class ForumProvider with ChangeNotifier {
     try {
       isLoadingThread = true;
       notifyListeners();
-      final response = await http.get("${Url.domain}/forum/latest-threads",
+      final response = await http.get(Uri.parse("${Url.domain}/forum/latest-threads"),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -308,7 +308,7 @@ class ForumProvider with ChangeNotifier {
       isLoadingThread = true;
       notifyListeners();
       final response =
-          await http.get("${Url.domain}/forum/thread-search/?q=$query",
+          await http.get(Uri.parse("${Url.domain}/forum/thread-search/?q=$query"),
               headers: _token == null
                   ? {
                       'Content-type': 'application/json',
@@ -364,7 +364,7 @@ class ForumProvider with ChangeNotifier {
       }
 
       if (urlImg != null) {
-        var requestUrl = await http.post("${Url.domain}/forum/image-url/",
+        var requestUrl = await http.post(Uri.parse("${Url.domain}/forum/image-url/"),
             body: json.encode({"url": urlImg}),
             headers: _token == null
                 ? {
@@ -380,7 +380,7 @@ class ForumProvider with ChangeNotifier {
         var y = json.decode(requestUrl.body);
         urls = y['data']['url'];
       }
-      final response = await http.post("${Url.domain}/forum/thread/create/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/thread/create/$id/"),
           body: json.encode({
             "title": title,
             "content": content,
@@ -448,7 +448,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> createComment({id, content}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/comment/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/comment/$id/"),
           body: json.encode({"content": content}),
           headers: _token == null
               ? {
@@ -470,7 +470,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> deleteComment({id}) async {
     try {
       final response =
-          await http.post("${Url.domain}/forum/delete/$id/", headers: {
+          await http.post(Uri.parse("${Url.domain}/forum/delete/$id/"), headers: {
         //'Content-type': 'application/json',
         //'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -483,7 +483,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> deleteReplyComment({id}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/remove/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/remove/$id/"),
           headers: _token == null
               ? {
                   //'Content-type': 'application/json',
@@ -503,7 +503,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> updateComment({id, content}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/comment-edit/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/comment-edit/$id/"),
           body: {"content": content},
           headers: _token == null
               ? {
@@ -525,7 +525,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> replyComment({id, content}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/reply/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/reply/$id/"),
           body: json.encode({"content": content}),
           headers: _token == null
               ? {
@@ -546,7 +546,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> updateReplyComment({id, content}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/reply-edit/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/reply-edit/$id/"),
           body: {"content": content},
           headers: _token == null
               ? {
@@ -567,7 +567,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> likeThread({id}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/like-thread/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/like-thread/$id/"),
           // body: json.encode({"liked": isLiked}),
           headers: _token == null
               ? {
@@ -589,7 +589,7 @@ class ForumProvider with ChangeNotifier {
   Future<void> updateLike({id, isLiked}) async {
     try {
       final response =
-          await http.post("${Url.domain}/forum/update-thread-like/$id/",
+          await http.post(Uri.parse("${Url.domain}/forum/update-thread-like/$id/"),
               body: json.encode({"liked": isLiked}),
               headers: _token == null
                   ? {
@@ -610,7 +610,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> likeComment({id}) async {
     try {
-      final response = await http.post("${Url.domain}/forum/comment-like/$id/",
+      final response = await http.post(Uri.parse("${Url.domain}/forum/comment-like/$id/"),
           //body: json.encode({"liked": isLiked}),
           headers: _token == null
               ? {
@@ -631,7 +631,7 @@ class ForumProvider with ChangeNotifier {
 
   Future<void> fetchSingleThread(id) async {
     try {
-      final response = await http.get("${Url.domain}/forum/thread-single/$id",
+      final response = await http.get(Uri.parse("${Url.domain}/forum/thread-single/$id"),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -658,7 +658,7 @@ class ForumProvider with ChangeNotifier {
     try {
       isLoadingLatest = true;
       notifyListeners();
-      final response = await http.get("${Url.domain}/forum/tags/",
+      final response = await http.get(Uri.parse("${Url.domain}/forum/tags/"),
           headers: _token == null
               ? {
                   'Content-type': 'application/json',
@@ -671,10 +671,10 @@ class ForumProvider with ChangeNotifier {
                   //'Authorization': 'Bearer $_token'
                 });
       tags = tags + json.decode(response.body)['data'];
-      for (int i = 0; i < tags.length; i++) {
-        tagsList.add(Language(
-            name: tags[i]['name'], position: i + 1, id: tags[i]['id']));
-      }
+      // for (int i = 0; i < tags.length; i++) {
+      //   tagsList.add(Language(
+      //       name: tags[i]['name'], position: i + 1, id: tags[i]['id']));
+      // }
       //isLoading=false;
       // print(response.body);
       //print(response.statusCode);
@@ -686,38 +686,38 @@ class ForumProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Language>> getLanguages(String query) async {
-    await Future.delayed(Duration(milliseconds: 500), null);
+//   Future<List<Language>> getLanguages(String query) async {
+//     await Future.delayed(Duration(milliseconds: 500), null);
 
-    return tagsList
-        .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  }
-}
+//     return tagsList
+//         .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
+//         .toList();
+//   }
+// }
 
-class Language extends Taggable {
-  /// Creates Language
-  Language({
-    this.name,
-    this.position,
-    this.id,
-  });
+// class Language extends Taggable {
+//   /// Creates Language
+//   Language({
+//     this.name,
+//     this.position,
+//     this.id,
+//   });
 
-  final String id;
+//   final String id;
 
-  ///
-  final String name;
+//   ///
+//   final String name;
 
-  ///
-  final int position;
+//   ///
+//   final int position;
 
-  @override
-  List<Object> get props => [name];
+//   @override
+//   List<Object> get props => [name];
 
-  /// Converts the class to json string.
-  String toJson() => '''  {
-    "name": $name,\n
-    "position": $position\n
-    "id": $id\n
-  }''';
+//   /// Converts the class to json string.
+//   String toJson() => '''  {
+//     "name": $name,\n
+//     "position": $position\n
+//     "id": $id\n
+//   }''';
 }

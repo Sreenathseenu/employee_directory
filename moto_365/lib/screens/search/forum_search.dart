@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/forum_provider.dart';
 import 'package:moto_365/screens/forum/forum_expanded.dart';
 import 'package:moto_365/screens/home/recommende_accessories.dart';
@@ -207,7 +208,7 @@ class _ForumSearchState extends State<ForumSearch> {
                                               radius: 12,
                                               //backgroundColor: Colors.deepPurple,
                                               backgroundImage: NetworkImage(
-                                                  'https://automoto.techbyheart.in/${data.threadSearch[index]['userimage']}'),
+                                                  '${Url.main}${data.threadSearch[index]['userimage']}'),
                                             ),
                                             SizedBox(width: 12),
                                             Text(

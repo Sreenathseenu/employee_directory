@@ -28,7 +28,7 @@ class Cart with ChangeNotifier {
   Future<void> fetchCart() async {
     try {
       final url = '${Url.domain}/carts/view-cart/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -62,7 +62,7 @@ class Cart with ChangeNotifier {
     try {
       final id = _items[0]['id'];
       // final url = '${Url.domain}/cart/$id/';
-      final response = await http.delete('${Url.domain}/cart/$id/', headers: {
+      final response = await http.delete(Uri.parse('${Url.domain}/cart/$id/'), headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $_token'
       });
@@ -78,7 +78,7 @@ class Cart with ChangeNotifier {
     try {
       // final url = '${Url.domain}/cart/$id/';
       final response = await http
-          .delete('${Url.domain}/carts/remove-from-cart/$id/', headers: {
+          .delete(Uri.parse('${Url.domain}/carts/remove-from-cart/$id/'), headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $_token'
       });
@@ -94,13 +94,13 @@ class Cart with ChangeNotifier {
     try {
       //final url = '${Url.domain}/cart/add_to_cart/';
       final response = mode == 'service'
-          ? await http.post('${Url.domain}/carts/add-services-to-cart/',
+          ? await http.post(Uri.parse('${Url.domain}/carts/add-services-to-cart/'),
               headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer $_token'
               },
               body: json.encode({'service': id}))
-          : await http.post('${Url.domain}/carts/add-products-to-cart/',
+          : await http.post(Uri.parse('${Url.domain}/carts/add-products-to-cart/'),
               headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer $_token'
@@ -123,7 +123,7 @@ class Cart with ChangeNotifier {
   }) async {
     try {
       final url = '${Url.domain}/orders/ordering/';
-      final response = await http.post(url,
+      final response = await http.post(Uri.parse(url),
           body: json.encode({
             "address": address,
             "street": "",
@@ -152,7 +152,7 @@ class Cart with ChangeNotifier {
   }) async {
     try {
       final url = '${Url.domain}/orders/place-order/?payment_id=$payId&if_drop=$ifdrop';
-      final response = await http.post(url,
+      final response = await http.post(Uri.parse(url),
           // body: json.encode({
           //   "address": address,
           //   "street": "",
@@ -178,7 +178,7 @@ class Cart with ChangeNotifier {
   Future<void> fetchOrders() async {
     try {
       final url = '${Url.domain}/jobcards/list-all-customer/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'

@@ -23,7 +23,7 @@ class Services with ChangeNotifier {
   Future<void> fetchServices() async {
     try {
       final url = '${Url.domain}/services/service/list-view/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
@@ -44,8 +44,8 @@ class Services with ChangeNotifier {
     try {
       // final url = '${Url.domain}/service/?search=cleaning';
 
-      final response =
-          await http.get('${Url.domain}/service/?search=$query', headers: {
+      final response = await http
+          .get(Uri.parse('${Url.domain}/service/?search=$query'), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         //'Authorization': 'Bearer $_token'
@@ -66,7 +66,8 @@ class Services with ChangeNotifier {
       isLoading = true;
       notifyListeners();
       final response = await http.get(
-          '${Url.domain}/stores/customer-service-combination-view/$query?latitude=0.00&longitude=0.00',
+          Uri.parse(
+              '${Url.domain}/stores/customer-service-combination-view/$query?latitude=0.00&longitude=0.00'),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -86,12 +87,20 @@ class Services with ChangeNotifier {
   Future<void> fetchServicesGroup() async {
     try {
       final url = '${Url.domain}/services/service-category/view/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'
       });
-      serviceGroup = json.decode(response.body)["data"] as List;
+      List list = [
+        {"id": "1", "image": "assets/images/insur.png"}
+      ];
+      List x = json.decode(response.body)["data"] as List;
+      for (var i = 0; i < x.length; i++) {
+        list.add(x[i]);
+      }
+      
+      serviceGroup = list;
       //fetchServices();
       isLoading = false;
       // print(_items[0]['id']);
@@ -108,7 +117,7 @@ class Services with ChangeNotifier {
 
       //notifyListeners();
       final url = '${Url.domain}/services/service/view/$id/';
-      final response = await http.get(url, headers: {
+      final response = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $_token'

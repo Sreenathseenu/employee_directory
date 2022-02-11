@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:moto_365/components/background.dart';
 import 'package:moto_365/components/button.dart';
 import 'package:moto_365/components/gard.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/auth_provider.dart';
 import 'package:moto_365/screens/auth/json_upload.dart';
 import 'package:moto_365/screens/auth/vehicle_add.dart';
@@ -22,6 +23,8 @@ class _GeneralState extends State<General> {
   TextEditingController kiloController = TextEditingController();
   final _form = GlobalKey<FormState>();
 
+ 
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Auth>(context);
@@ -33,9 +36,7 @@ class _GeneralState extends State<General> {
       child: RefreshIndicator(
         onRefresh: () {
           return data.fetchCustomer().then((_) {
-            
             data.fetchVehicles();
-            
           });
         },
         child: Scaffold(
@@ -44,10 +45,11 @@ class _GeneralState extends State<General> {
             title: Text('GENERAL'),
           ),
           body: data.isAdding
-              ? Center(child: SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-))
+              ? Center(
+                  child: SpinKitSpinningLines(
+                  color: Colors.deepOrange,
+                  size: 50.0,
+                ))
               : AnimationLimiter(
                   child: ListView(
                     children: AnimationConfiguration.toStaggeredList(
@@ -76,13 +78,14 @@ class _GeneralState extends State<General> {
                                         )),
                                     child: CircleAvatar(
                                       radius: 50,
-                                      backgroundImage: data.customer['photo'] ==
-                                                  [] ||
-                                              data.customer['photo'].isEmpty
-                                          ? AssetImage(
-                                              'assets/images/slice.png')
-                                          : NetworkImage(
-                                              data.customer['photo']),
+                                      backgroundImage:
+                                          data.customer['photo'] == null
+                                              ||
+                                data.customer['photo'] == ""
+                            ?  AssetImage(
+                                                  'assets/images/slice.png')
+                                              : NetworkImage(
+                                                  data.customer['photo']),
                                     ),
                                   ),
                                 ),
@@ -119,7 +122,7 @@ class _GeneralState extends State<General> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                          data.customer['name']??"",
+                                          data.customer['name'] ?? "",
                                           style: const TextStyle(
                                               color: const Color(0xdeffffff),
                                               fontWeight: FontWeight.w600,
@@ -157,7 +160,7 @@ class _GeneralState extends State<General> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                          data.customer['phone'],
+                                          data.customer['phone']??"",
                                           style: const TextStyle(
                                               color: const Color(0xdeffffff),
                                               fontWeight: FontWeight.w600,
@@ -189,7 +192,7 @@ class _GeneralState extends State<General> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                          data.customer['email'],
+                                          data.customer['email']??"",
                                           style: const TextStyle(
                                               color: const Color(0xdeffffff),
                                               fontWeight: FontWeight.w600,
@@ -210,16 +213,15 @@ class _GeneralState extends State<General> {
                                 Container(
                                   //color: Colors.grey,
                                   child: Column(
-                                      children: data.vehicles
-                                          .map<Widget>((e) {
+                                      children: data.vehicles.map<Widget>((e) {
                                     print('hello');
                                     print(data.vehicles.length);
-                                   // print(data.customer['vehicle']);
+                                    // print(data.customer['vehicle']);
                                     print(e);
                                     data.setIndex(data.getIndex(e) + 1);
 
-                                   // print('index : ${data.getIndex(e)}');
-                                   // print('vehicle :${data.vehicle}');
+                                    // print('index : ${data.getIndex(e)}');
+                                    // print('vehicle :${data.vehicle}');
                                     return Container(
                                       margin: EdgeInsets.only(
                                           left: 16,
@@ -232,7 +234,12 @@ class _GeneralState extends State<General> {
                                           borderRadius:
                                               BorderRadius.circular(12)),
                                       child: ListTile(
-                                        leading: Image(image: NetworkImage("https://automoto.techbyheart.in${e["image"]}"),height: 100,width: 100,),
+                                        leading: Image(
+                                          image: NetworkImage(
+                                              "${Url.main}/${e["image"]}"),
+                                          height: 100,
+                                          width: 100,
+                                        ),
                                         onTap: () {
                                           e['current_km'] != null
                                               ? Navigator.of(context).push(
@@ -321,9 +328,11 @@ class _GeneralState extends State<General> {
                                                                     ? Center(
                                                                         child:
                                                                             SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-))
+                                                                        color: Colors
+                                                                            .deepOrange,
+                                                                        size:
+                                                                            50.0,
+                                                                      ))
                                                                     : Button(
                                                                         onPress:
                                                                             () {
@@ -398,7 +407,7 @@ class _GeneralState extends State<General> {
                                         //         .deleteVehicle(e['id'])
                                         //         .then((value) {
                                         //       data.fetchCustomer().then((_) {
-                                                
+
                                         //         data.fetchVehicles();
                                         //       });
                                         //     });
@@ -408,10 +417,10 @@ class _GeneralState extends State<General> {
                                           children: [
                                             Text(
                                               e['rc_number'] == null
-                                                  ? e['vehicle_engine_number']??""
-                                                  : e['rc_number']??"",
-                                                  overflow: TextOverflow.ellipsis,
-                                              
+                                                  ? e['vehicle_engine_number'] ??
+                                                      ""
+                                                  : e['rc_number'] ?? "",
+                                              overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
                                                   color: Colors.white60,
                                                   fontFamily: "Montserrat",
@@ -424,8 +433,8 @@ class _GeneralState extends State<General> {
                                                   e['current_km'] == null
                                                       ? ". 0 KM"
                                                       : ". ${e['current_km']} KM",
-                                                      overflow: TextOverflow.ellipsis,
-                                              
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: const TextStyle(
                                                       color: Colors.white60,
                                                       fontFamily: "Montserrat",
@@ -559,15 +568,15 @@ class _GeneralState extends State<General> {
                                       horizontal: 20),
                                   child: Button(
                                     onPress: () {
-                                       Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(
-                                      builder: (context) => VehicleAdd(
-                                            insureDocs: {},
-                                            licenseDocs: {},
-                                            routeArgs: {},
-                                            rcDocs: {},
-                                            mode: 'add',
-                                          )));
+                                      Navigator.of(context)
+                                          .pushReplacement(MaterialPageRoute(
+                                              builder: (context) => VehicleAdd(
+                                                    insureDocs: {},
+                                                    licenseDocs: {},
+                                                    routeArgs: {},
+                                                    rcDocs: {},
+                                                    mode: 'add',
+                                                  )));
                                     },
                                     text: 'ADD VEHICLE',
                                   ),

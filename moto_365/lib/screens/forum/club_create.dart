@@ -143,10 +143,10 @@ class _ClubCreateState extends State<ClubCreate> {
                   padding: const EdgeInsets.all(24.0),
                   child: FlatButton(
                     onPressed: () async{
-                       file = await FilePicker.getFile(
+                       file = (await FilePicker.platform.pickFiles(
                allowedExtensions:  ['jpg', 'png','jpeg'],
                type: FileType.custom
-             );
+             )) as File;
              
             print(file.path);
             setState(() {

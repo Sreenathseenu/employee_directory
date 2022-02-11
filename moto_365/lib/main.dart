@@ -1,3 +1,5 @@
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moto_365/main_app.dart';
@@ -9,11 +11,12 @@ import 'package:moto_365/providers/map_provider.dart';
 import './providers/productrs_provider.dart';
 import './providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:bugsnag_crashlytics/bugsnag_crashlytics.dart';
+
 
 import './providers/services_provider.dart';
+List<CameraDescription> cameras;
 
-void main() {
+Future<void> main() async {
   // BugsnagCrashlytics.instance.register(
   //     androidApiKey: "2881ddbdacb389eec8530635547f4c51",
   //     iosApiKey: "2881ddbdacb389eec8530635547f4c51",
@@ -21,6 +24,36 @@ void main() {
   //     appVersion: '1.0');
   // FlutterError.onError = BugsnagCrashlytics.instance.recordFlutterError;
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+//   AwesomeNotifications().initialize(
+//   // set the icon to null if you want to use the default app icon
+//   'resource://drawable/res_app_icon',
+//   [
+//     NotificationChannel(
+//         channelGroupKey: 'basic_channel_group',
+//         channelKey: 'basic_channel',
+//         channelName: 'Basic notifications',
+//         channelDescription: 'Notification channel for basic tests',
+//         defaultColor: Color(0xFF9D50DD),
+//         ledColor: Colors.white)
+//   ],
+//   // Channel groups are only visual and are not required
+//   channelGroups: [
+//     NotificationChannelGroup(
+//         channelGroupkey: 'basic_channel_group',
+//         channelGroupName: 'Basic group')
+//   ],
+//   debug: true
+// );
+// AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+//   if (!isAllowed) {
+//     // This is just a basic example. For real apps, you must show some
+//     // friendly dialog box before call the request method.
+//     // This is very important to not harm the user experience
+//     AwesomeNotifications().requestPermissionToSendNotifications();
+//   }
+// });
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 

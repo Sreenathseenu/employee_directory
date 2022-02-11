@@ -41,44 +41,47 @@ class _ImageUploadState extends State<ImageUpload> {
     return Background(
       child: Scaffold(
         body: Center(
-          child:_isLoading?SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-): Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Upload Your Profile Picture',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                ),
-              ),
-              CircleAvatar(
-                radius: 125,
-                backgroundColor: Colors.white10,
-                backgroundImage: _isImageSelected
-                    ? FileImage(file)
-                    : AssetImage(
-                        'assets/images/slice.png',
+          child: _isLoading
+              ? SpinKitSpinningLines(
+                  color: Colors.deepOrange,
+                  size: 50.0,
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Upload Your Profile Picture',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
                       ),
-              ),
-              Button(
-                onPress: () async {
-                  print('object');
-                  //file = await ImagePicker.pickImage(source: ImageSource.gallery );
-                  file = await FilePicker.getFile(
-                      allowedExtensions: ['jpg', 'png', 'jpeg'],
-                      type: FileType.custom);
-
-                  print(file.path);
-                  setState(() {
-                    _isImageSelected = true;
-                  });
-                },
-                /*  showModalBottomSheet(context:context, builder:(context)=>Container(
+                    ),
+                    CircleAvatar(
+                      radius: 125,
+                      backgroundColor: Colors.white10,
+                      backgroundImage: _isImageSelected
+                          ? FileImage(file)
+                          : AssetImage(
+                              'assets/images/slice.png',
+                            ),
+                    ),
+                    Button(
+                      onPress: () async {
+                        print('object');
+                        //file = await ImagePicker.pickImage(source: ImageSource.gallery );
+                        var f = (await FilePicker.platform.pickFiles(
+                            allowedExtensions: ['jpg', 'png', 'jpeg'],
+                            type: FileType.custom));
+                        file =File( f.files.single.path);
+                        print("yatytttttt");
+                        print(file.path);
+                        setState(() {
+                          _isImageSelected = true;
+                        });
+                      },
+                      /*  showModalBottomSheet(context:context, builder:(context)=>Container(
                               height: 100,
                              child: Column(children: <Widget>[
                               /* FlatButton(onPressed: () async {
@@ -119,10 +122,10 @@ class _ImageUploadState extends State<ImageUpload> {
                               ],)
                             ));
                           },*/
-                text: _isImageSelected ? 'CHANGE' : 'ADD IMAGE',
-              ),
-            ],
-          ),
+                      text: _isImageSelected ? 'CHANGE' : 'ADD IMAGE',
+                    ),
+                  ],
+                ),
         ),
         bottomSheet: Container(
           color: Colors.transparent,
@@ -209,9 +212,9 @@ class _ImageUploadState extends State<ImageUpload> {
                                     username: '',
                                     year: '')
                                 .then((value) {
-                                  setState(() {
-                                        _isLoading = false;
-                                      });
+                              setState(() {
+                                _isLoading = false;
+                              });
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(
                                       builder: (context) => VehicleAdd(

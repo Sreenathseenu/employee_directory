@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moto_365/components/button.dart';
 import 'package:moto_365/components/carousel.dart';
 import 'package:moto_365/components/gard.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/auth_provider.dart';
 import 'package:moto_365/providers/cart_provider.dart';
 import 'package:moto_365/providers/productrs_provider.dart';
@@ -31,7 +32,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     super.initState();
     _pageController = PageController(initialPage: 0, viewportFraction: 0.8);
     images = [
-      "https://automoto.techbyheart.in${widget.item["image"]}",
+      "${Url.main}${widget.item["image"]}",
     ];
     final data = Provider.of<Products>(context, listen: false);
 
@@ -223,8 +224,8 @@ class _ProductDetailsState extends State<ProductDetails> {
 //   color: Colors.deepOrange,
 //   size: 50.0,
 // ),
-//           ): 
-Row(
+//           ):
+                      Row(
                           children: List.generate(
                               centers.length,
                               (index) => GestureDetector(
@@ -238,7 +239,10 @@ Row(
                                       margin: EdgeInsets.only(right: 5),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color:selectedCenter == centers[index]["id"]? Colors.deepOrange:Colors.grey[900],
+                                        color: selectedCenter ==
+                                                centers[index]["id"]
+                                            ? Colors.deepOrange
+                                            : Colors.grey[900],
                                       ),
                                       child: Center(
                                         child: Column(
@@ -297,31 +301,32 @@ Row(
               child: Button(
                 onPress: () {
                   if (centers.isNotEmpty) {
-                  if (adata.isAuth) {
-                    data
-                        .addToCart(selectedCenter, quantity, 'products')
-                        .then((value) {
-                      Scaffold.of(context).hideCurrentSnackBar();
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text('successfully added to cart',
-                            style: TextStyle(color: Colors.white)),
-                        duration: Duration(seconds: 3),
-                        backgroundColor: Colors.grey[900],
-                      ));
-                    });
+                    if (adata.isAuth) {
+                      data
+                          .addToCart(selectedCenter, quantity, 'products')
+                          .then((value) {
+                        Scaffold.of(context).hideCurrentSnackBar();
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('successfully added to cart',
+                              style: TextStyle(color: Colors.white)),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.grey[900],
+                        ));
+                      });
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LoginScreen()));
+                    }
                   } else {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-                  }} else {
-                Scaffold.of(context).hideCurrentSnackBar();
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      'This product is not available for your default vehicle',
-                      style: TextStyle(color: Colors.white)),
-                  duration: Duration(seconds: 3),
-                  backgroundColor: Colors.grey[900],
-                ));
-              }
+                    Scaffold.of(context).hideCurrentSnackBar();
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          'This product is not available for your default vehicle',
+                          style: TextStyle(color: Colors.white)),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.grey[900],
+                    ));
+                  }
                 },
                 text: 'ADD TO CART',
               ),

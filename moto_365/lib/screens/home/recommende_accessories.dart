@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/productrs_provider.dart';
 import 'package:moto_365/screens/search/products_expanded.dart';
 
@@ -13,10 +14,11 @@ class RecommendedAccessories extends StatelessWidget {
     final recomended = Provider.of<Products>(context);
     //print(recomended.items[0].runtimeType);
     return recomended.isLoading
-        ? Center(child: SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-))
+        ? Center(
+            child: SpinKitSpinningLines(
+            color: Colors.deepOrange,
+            size: 50.0,
+          ))
         : Container(
             margin: EdgeInsets.symmetric(vertical: 12),
             //width: double.infinity,
@@ -48,7 +50,7 @@ class RecommendedAccessories extends StatelessWidget {
                         },
                         child: Container(
                           width: 116,
-                                      height: 80,
+                          height: 80,
                           margin: EdgeInsets.only(top: 8, left: 8, right: 4),
                           decoration: BoxDecoration(
                               color: Colors.grey[900],
@@ -70,8 +72,8 @@ class RecommendedAccessories extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(
                                         8), //BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8)),
                                     child: Image(
-                                      image: NetworkImage("https://automoto.techbyheart.in${recomended.items[index]
-                                              ['image']}"),
+                                      image: NetworkImage(
+                                          "${Url.main}${recomended.items[index]['image']}"),
                                       fit: BoxFit.cover,
                                       width: 116,
                                       height: 80,
@@ -79,11 +81,14 @@ class RecommendedAccessories extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                                Expanded(
-                                  flex:2,
+                              Expanded(
+                                  flex: 2,
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Text(recomended.items[index]['name']??"",overflow: TextOverflow.ellipsis,),
+                                    child: Text(
+                                      recomended.items[index]['name'] ?? "",
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   )),
                             ],
                           ),

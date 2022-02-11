@@ -19,6 +19,7 @@ class Auth with ChangeNotifier {
   String _userId;
   Timer _authTimer;
   List<dynamic> customers = [];
+  List varients = [];
   Map customer = {};
   List vehicle = [];
   List vehicles = [];
@@ -27,6 +28,7 @@ class Auth with ChangeNotifier {
   bool isLoadingAuth = true;
   bool isSignUp = false;
   List seen = [];
+  bool isError = false;
   List unseen = [];
   bool isseen = false;
   bool isDetailed = false;
@@ -389,7 +391,7 @@ class Auth with ChangeNotifier {
     try {
       final url = "${Url.domain}/users/verify-otp/";
       final response = await http.post(
-        url,
+        Uri.parse(url),
         body: {"country": "IN", "phone": phone, "otp": otp},
       );
       final res = json.decode(response.body)["data"];
@@ -427,9 +429,9 @@ class Auth with ChangeNotifier {
         prefs.setString('userData', userData);
       }
       print('\n\nsaved');
-      await fetchCustomer();
-      await fetchAddress();
-      fetchVehicles();
+      // await fetchCustomer();
+      // await fetchAddress();
+      // fetchVehicles();
 
       notifyListeners();
       print(DateFormat('yyyy-MM-dd').format(_expiryDate));
@@ -477,7 +479,8 @@ class Auth with ChangeNotifier {
   ) async {
     try {
       final url = "${Url.domain}/users/enter-phone/?";
-      final otp = await http.post(url, body: {"country": "IN", "phone": phone});
+      final otp = await http
+          .post(Uri.parse(url), body: {"country": "IN", "phone": phone});
       print(otp.body);
       notifyListeners();
     } catch (error) {
@@ -497,13 +500,13 @@ class Auth with ChangeNotifier {
     var imgId = img['id'];
 
     print('image saved');
-    final req = await http.patch('${Url.domain}/customer/$id/',
+    final req = await http.patch(Uri.parse('${Url.domain}/customer/$id/'),
         body: json.encode({'photo': imgId}));
     print(req.body);
   }
 
   Future<void> updateUser(id, fname, lname, age, gender, phone) async {
-    final req = await http.patch('${Url.domain}/customer/$id/',
+    final req = await http.patch(Uri.parse('${Url.domain}/customer/$id/'),
         body: json.encode({
           "name": "$fname $lname",
           "age": age,
@@ -516,7 +519,7 @@ class Auth with ChangeNotifier {
       id, rcdocs, year, chassis, engine, vehicleId, reg, date) async {
     String docs = rcdocs != null ? json.encode(rcdocs) : null;
     final vehicleCustRes =
-        await http.patch('${Url.domain}/customervehicle/$id/',
+        await http.patch(Uri.parse('${Url.domain}/customervehicle/$id/'),
             body: json.encode({
               "model_year": year,
               "chassis_no": chassis,
@@ -568,65 +571,83 @@ class Auth with ChangeNotifier {
       "father_name": father,
       "regn_address": address
     });
-    print("${Url.domain}/vehicles/cutomer-vehicle-add/$id/");
+    try {
+      isError = false;
+      print("${Url.domain}/vehicles/cutomer-vehicle-add/$id/");
 
-    final vehicleCustRes =
-        await http.post('${Url.domain}/vehicles/cutomer-vehicle-add/$id/',
-            body: json.encode({
-              "rc_number": regn,
-              "current_km": km,
-            }),
-            headers: _token != null
-                ? {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer $_token'
-                  }
-                : {"Content-Type": "application/json"});
-    print('started0000');
-    print(vehicleCustRes.body);
+      final vehicleCustRes = await http.post(Uri.parse(
+              // '${Url.domain}/vehicles/add-cutomer-vehicle-api-new/$id/?chasi=$chasis&eng=$engine&current_km=$km&register_number=$regn'
+              // Uri.parse('${Url.domain}/vehicles/cutomer-vehicle-add/$id/'
+              "${Url.domain}/vehicles/add-cutomer-vehicle-api-new?register_number=$regn"),
+          // body: json.encode({
+          //   //"rc_number": regn,
+          //   "current_km": km,
+          //   "eng":engine,
+          //   "chasi":chasis,
+          //   "register_number":regn
+          // }),
+          headers: _token != null
+              ? {
+                  'Content-type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': 'Bearer $_token'
+                }
+              : {"Content-Type": "application/json"});
+      print('started0000');
+      print(vehicleCustRes.statusCode);
+      print(vehicleCustRes.body);
+      if (vehicleCustRes.statusCode != 500) {
+        print("yayyyyyyy");
+        this.varients = json.decode(vehicleCustRes.body)["data"];
+        print('started0000');
+        //var vehicleCustId = vehCust['id'];
 
-    var vehCust = json.decode(vehicleCustRes.body);
-    print('started0000');
-    //var vehicleCustId = vehCust['id'];
+        print('vehicle saved');
+        await fetchCustomer();
+        await fetchAddress();
+        fetchVehicles();
+        setIndex(-1);
+      } else {
+        print("noooooooo");
+        isError = true;
+      }
 
-    print('vehicle saved');
+      // final req = await http.post('${Url.domain}/customer/vehicle/update/',
+      //     body: json.encode({"id": vehicleCustId}),
+      //     headers: _token != null
+      //         ? {
+      //             'Content-type': 'application/json',
+      //             'Accept': 'application/json',
+      //             'Authorization': 'Bearer $_token'
+      //           }
+      //         : {"Content-Type": "application/json"});
 
-    // final req = await http.post('${Url.domain}/customer/vehicle/update/',
-    //     body: json.encode({"id": vehicleCustId}),
-    //     headers: _token != null
-    //         ? {
-    //             'Content-type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': 'Bearer $_token'
-    //           }
-    //         : {"Content-Type": "application/json"});
-
-    await fetchCustomer();
-    await fetchAddress();
-    fetchVehicles();
-    setIndex(-1);
-    print("error here");
-    notifyListeners();
-    this.isAdding = false;
-    notifyListeners();
+      print("error here");
+      this.isAdding = false;
+      notifyListeners();
+    } catch (e) {
+      this.isAdding = false;
+      notifyListeners();
+      throw Exception(e);
+    }
   }
 
   Future<void> editVehicle(
       id, year, chassis, engine, vehicleId, reg, date) async {
     this.isAdding = true;
     notifyListeners();
-    final response = await http.patch('${Url.domain}/customervehicle/$id/',
-        body: json.encode({
-          "model_year": year,
-          "chassis_no": chassis,
-          "engine_no": engine,
-          "is_active": "True",
-          "vehicle": vehicleId,
-          "registration_number": reg,
-          "mfg_date": date
-        }),
-        headers: {
+    final response =
+        await http.patch(Uri.parse('${Url.domain}/customervehicle/$id/'),
+            body: json.encode({
+              "model_year": year,
+              "chassis_no": chassis,
+              "engine_no": engine,
+              "is_active": "True",
+              "vehicle": vehicleId,
+              "registration_number": reg,
+              "mfg_date": date
+            }),
+            headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -647,8 +668,8 @@ class Auth with ChangeNotifier {
 
   Future<void> deleteVehicle(id) async {
     print('\n\nstartedddd\n');
-    final response =
-        await http.delete("${Url.domain}/customervehicle/$id/", headers: {
+    final response = await http
+        .delete(Uri.parse("${Url.domain}/customervehicle/$id/"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -661,8 +682,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> fetchAd() async {
-    final response =
-        await http.get("${Url.domain}/banner/view-banner/", headers: {
+    final response = await http
+        .get(Uri.parse("${Url.domain}/banner/view-banner/"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -707,8 +728,8 @@ class Auth with ChangeNotifier {
     this.isDetailed = true;
     //notifyListeners();
     print('\n\nkooi$cusid');
-    final response =
-        await http.get("${Url.domain}/vehicles/view-data/$cusid/", headers: {
+    final response = await http
+        .get(Uri.parse("${Url.domain}/vehicles/view-data/$cusid/"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -735,8 +756,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> fetchAlert() async {
-    final response =
-        await http.get("${Url.domain}/uservehicle/vehicles-alert", headers: {
+    final response = await http
+        .get(Uri.parse("${Url.domain}/uservehicle/vehicles-alert"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -757,8 +778,8 @@ class Auth with ChangeNotifier {
     x = unseen.map((e) => e['id']).toList();
 
     print('ids:$x');
-    final response =
-        await http.get("${Url.domain}/banner/banner-watched?q=$x", headers: {
+    final response = await http
+        .get(Uri.parse("${Url.domain}/banner/banner-watched?q=$x"), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token'
@@ -772,7 +793,7 @@ class Auth with ChangeNotifier {
     this.isAdding = true;
     notifyListeners();
     final response = await http.get(
-      "${Url.domain}/vehicles/available-brands/?vehicle_type=$type",
+      Uri.parse("${Url.domain}/vehicles/available-brands/?vehicle_type=$type"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -788,7 +809,8 @@ class Auth with ChangeNotifier {
     this.isAdding = true;
     notifyListeners();
     final response = await http.get(
-      "${Url.domain}/vehicles/available-models/?brand_id=$brand&vehicle_type=$type",
+      Uri.parse(
+          "${Url.domain}/vehicles/available-models/?brand_id=$brand&vehicle_type=$type"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -804,7 +826,8 @@ class Auth with ChangeNotifier {
     this.isAdding = true;
     notifyListeners();
     final response = await http.get(
-      "${Url.domain}/vehicles/available-model-year/?brand_id=$brand&vehicle_type=$type&model_id=$model",
+      Uri.parse(
+          "${Url.domain}/vehicles/available-model-year/?brand_id=$brand&vehicle_type=$type&model_id=$model"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -821,7 +844,8 @@ class Auth with ChangeNotifier {
     this.isAdding = true;
     notifyListeners();
     final response = await http.get(
-      "${Url.domain}/vehicles/available-model-fuel-type/?brand_id=$brand&vehicle_type=$type&model_id=$model&year=$year",
+      Uri.parse(
+          "${Url.domain}/vehicles/available-model-fuel-type/?brand_id=$brand&vehicle_type=$type&model_id=$model&year=$year"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -840,7 +864,8 @@ class Auth with ChangeNotifier {
     print(
         "${Url.domain}/vehicles/vehicle/?brand_id=$brand&vehicle_type=$type&model_id=$model&year=$year&fuel_type=$fuel");
     final response = await http.get(
-      "${Url.domain}/vehicles/vehicle/?brand_id=$brand&vehicle_type=$type&model_id=$model&year=$year&fuel_type=$fuel",
+      Uri.parse(
+          "${Url.domain}/vehicles/vehicle/?brand_id=$brand&vehicle_type=$type&model_id=$model&year=$year&fuel_type=$fuel"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -859,7 +884,7 @@ class Auth with ChangeNotifier {
     notifyListeners();
     print("${Url.domain}/users/profile-address-view/customer/");
     final response = await http.get(
-      "${Url.domain}/users/profile-address-view/customer/",
+      Uri.parse("${Url.domain}/users/profile-address-view/customer/"),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -877,21 +902,21 @@ class Auth with ChangeNotifier {
       {particular, detail1, detail2, detail3, detail4, id}) async {
     this.isAdding = true;
     notifyListeners();
-    final response =
-        await http.post("${Url.domain}/uservehicle/add-aditional-data/",
-            headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $_token'
-            },
-            body: json.encode({
-              "particular": particular,
-              "detail_1": detail1,
-              "detail_2": detail2,
-              "detail_3": detail3,
-              "detail_4": detail4,
-              "customervehicle": "$id"
-            }));
+    final response = await http.post(
+        Uri.parse("${Url.domain}/uservehicle/add-aditional-data/"),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $_token'
+        },
+        body: json.encode({
+          "particular": particular,
+          "detail_1": detail1,
+          "detail_2": detail2,
+          "detail_3": detail3,
+          "detail_4": detail4,
+          "customervehicle": "$id"
+        }));
     print('1111111');
     print(response.statusCode);
     print(response.body);
@@ -920,33 +945,33 @@ class Auth with ChangeNotifier {
       coupon}) async {
     this.isAdding = true;
     notifyListeners();
-    final response =
-        await http.post("${Url.domain}/insurance/add-insurance/1/?reg_no=$reg",
-            headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $_token'
-            },
-            body: json.encode({
-              "first_name": fname,
-              "last_name": lname,
-              "previous_claim": prev,
-              "email": email,
-              "mob_no": mob,
-              "policy_start_date": start,
-              "policy_end_date": end,
-              "engine_no": engine,
-              "chasis_no": chasis,
-              "date_of_appln": DateFormat('yyyy-MM-dd').format(DateTime.now()),
-              "make": make,
-              "model": model,
-              "variant": varient,
-              "cc": cc,
-              "color": color,
-              "fuel": fuel,
-              "mfg_year": year,
-              "coupon_code": coupon
-            }));
+    final response = await http.post(
+        Uri.parse("${Url.domain}/insurance/add-insurance/1/?reg_no=$reg"),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $_token'
+        },
+        body: json.encode({
+          "first_name": fname,
+          "last_name": lname,
+          "previous_claim": prev,
+          "email": email,
+          "mob_no": mob,
+          "policy_start_date": start,
+          "policy_end_date": end,
+          "engine_no": engine,
+          "chasis_no": chasis,
+          "date_of_appln": DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          "make": make,
+          "model": model,
+          "variant": varient,
+          "cc": cc,
+          "color": color,
+          "fuel": fuel,
+          "mfg_year": year,
+          "coupon_code": coupon
+        }));
     print('1111111');
     print(response.body);
     this.isAdding = false;
@@ -1077,7 +1102,7 @@ class Auth with ChangeNotifier {
     print("ftech customer s");
     final url = '${Url.domain}/users/profile-view/customer/';
     final response = await http.get(
-      url,
+      Uri.parse(url),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -1100,7 +1125,7 @@ class Auth with ChangeNotifier {
     print("fetch vehicle start");
     final url = '${Url.domain}/vehicles/vehicle-list/';
     final response = await http.get(
-      url,
+      Uri.parse(url),
       headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -1155,22 +1180,25 @@ class Auth with ChangeNotifier {
             'Accept': 'application/json',
             'Authorization': 'Bearer $_token'
           });
+
     request.files.add(await http.MultipartFile.fromPath("photo", file.path));
     print('start1');
     request.fields["name"] = fname;
-    request.fields["age"] = age;
-    request.fields["email"] = email;
+    request.fields["age"] = "22";
+    request.fields["email"] = "email@moto.com";
     request.fields["dob"] = "2010-01-01";
-    request.fields["gender"] = gender;
+    request.fields["gender"] = "male";
     var imgRes = await request.send();
     print('start1');
     var img = json.decode(await imgRes.stream.bytesToString());
     print('start1');
     print(imgRes.statusCode);
+
+    print('start2');
     var imgId = img['id'];
 
     print('image saved');
-    String docs = json.encode(rcdocs);
+    //String docs = json.encode(rcdocs);
 
     // final vehicleCustRes = await http.post('${Url.domain}/customervehicle/',
     //     body: json.encode({
@@ -1189,18 +1217,18 @@ class Auth with ChangeNotifier {
     // var vehicleCustId = vehCust['id'];
     // print('vehicle saved');
 
-    var body = json.encode({
-      "address": address,
-      "postal_code": pin,
-    });
-    final url =
-        '${Url.domain}/users/profile-address-create/customer/?latitude=9.931233&longitude=76.267303';
-    final response = await http.post(url, body: body, headers: {
-      "Content-Type": "application/json",
-      'Authorization': 'Bearer $_token'
-    });
-    print(response.statusCode);
-    print(response.body);
+    // var body = json.encode({
+    //   "address": address,
+    //   "postal_code": pin,
+    // });
+    // final url =
+    //     '${Url.domain}/users/profile-address-create/customer/?latitude=9.931233&longitude=76.267303';
+    // final response = await http.post(Uri.parse(url), body: body, headers: {
+    //   "Content-Type": "application/json",
+    //   'Authorization': 'Bearer $_token'
+    // });
+    // print(response.statusCode);
+    // print(response.body);
     print('customer saved');
 
     isSignUp = true;
@@ -1317,14 +1345,15 @@ class Auth with ChangeNotifier {
       print(results[0].addressLine);
       final id = customer['id'];
       print(id);
-      final response = await http.patch("${Url.domain}/customer/$id/",
-          body: json.encode({
-            "location": {
-              "latitude": locData.latitude,
-              "longitude": locData.longitude
-            }
-          }),
-          headers: {"Content-Type": "application/json"});
+      final response =
+          await http.patch(Uri.parse("${Url.domain}/customer/$id/"),
+              body: json.encode({
+                "location": {
+                  "latitude": locData.latitude,
+                  "longitude": locData.longitude
+                }
+              }),
+              headers: {"Content-Type": "application/json"});
       print(response.statusCode);
     } catch (error) {
       print(error);

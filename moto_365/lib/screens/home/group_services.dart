@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moto_365/components/gard.dart';
+import 'package:moto_365/models/urls.dart';
 import 'package:moto_365/providers/services_provider.dart';
 import 'package:moto_365/screens/search/services_expanded.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +34,9 @@ class _GroupServicesState extends State<GroupServices> {
         body: data.isLoading
             ? Center(
                 child: SpinKitSpinningLines(
-  color: Colors.deepOrange,
-  size: 50.0,
-),
+                  color: Colors.deepOrange,
+                  size: 50.0,
+                ),
               )
             : GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -49,8 +50,7 @@ class _GroupServicesState extends State<GroupServices> {
                         : data.groupServices.length,
                 itemBuilder: (context, index) {
                   print("mmmmmm");
-                  print(
-                      "https://autocustomer.techbyheart.in${data.groupServices[index]['image']}");
+                  print("${Url.main}${data.groupServices[index]['image']}");
                   return GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(
@@ -86,7 +86,7 @@ class _GroupServicesState extends State<GroupServices> {
                                                   ['image'] ==
                                               null
                                           ? ""
-                                          : "https://automoto.techbyheart.in${data.groupServices[index]['image']}"),
+                                          : "${Url.main}${data.groupServices[index]['image']}"),
                                       fit: BoxFit.cover,
                                       width: 116,
                                       height: 80,
@@ -96,10 +96,10 @@ class _GroupServicesState extends State<GroupServices> {
                                   // Image(image:data.serviceGroup[index]['images'].isEmpty? AssetImage('assets/images/slice.png'):NetworkImage(data.serviceGroup[index]['images'][0]['image']),fit: BoxFit.cover,height: 125,width: 120),
                                   ),
                             ),
-
-                             Expanded(
-                               flex: 1,
-                               child: Text(data.groupServices[index]['name']??"")),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                    data.groupServices[index]['name'] ?? "")),
                           ],
                         )),
                   );

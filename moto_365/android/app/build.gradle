@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '3'
+    flutterVersionCode = '6'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.2'
+    flutterVersionName = '1.5'
 }
 
 apply plugin: 'com.android.application'
@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,10 +46,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.automoto.moto_365"
-        minSdkVersion 19
-        targetSdkVersion 29
-        versionCode 3
+        applicationId "com.automoto.moto365"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 9
         versionName flutterVersionName
         multiDexEnabled true
     }
